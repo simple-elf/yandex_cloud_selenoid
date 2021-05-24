@@ -32,11 +32,11 @@ jobs:
           --create-boot-disk image-name=selenoid-110-20072020-1645-1595253212,size=10 \
           --image-folder-id standard-images --memory 2 --cores 2 --core-fraction 100
 
-      - run: yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address -r
       - name: Get public IP
         run: echo "::set-output name=PUBLIC_IP::$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
         id: public_ip
-      - run: echo ${{ steps.public_ip.outputs.PUBLIC_IP }}
+
+      - run: sleep 30
 
       - name: Check status
         run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}/status
