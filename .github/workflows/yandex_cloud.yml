@@ -34,11 +34,12 @@ jobs:
 
       - run: yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address
       - name: Get public IP
-        run: IP=$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address)
-      - run: echo ${IP}
+        run: echo "::set-output name=PUBLIC_IP::"$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address)"
+        id: public_ip
+      - run: echo ${{ steps.public_ip.outputs.PUBLIC_IP }}
 
       - name: Check status
-        run: curl http://${IP}/status
+        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}/status
 
       - name: Delete instance
         if: always()
