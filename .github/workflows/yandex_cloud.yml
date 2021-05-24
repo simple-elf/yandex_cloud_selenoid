@@ -34,7 +34,7 @@ jobs:
 
       - run: yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address
       - name: Get public IP
-        run: echo "::set-output name=PUBLIC_IP::"$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address)"
+        run: echo "::set-output name=PUBLIC_IP::$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address)"
         id: public_ip
       - run: echo ${{ steps.public_ip.outputs.PUBLIC_IP }}
 
