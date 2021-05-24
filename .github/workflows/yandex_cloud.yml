@@ -11,8 +11,8 @@ jobs:
         run: echo running on branch ${GITHUB_REF##*/}
       - name: Install YandexCloud CLI
         run: curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-      - name: Add YandexCloud CLI to $PATH
-        run: echo "::add-path::/home/runner/yandex-cloud/bin"
+#      - name: Add YandexCloud CLI to $PATH
+#        run: echo "::add-path::/home/runner/yandex-cloud/bin"
       - name: Check $PATH
         run: echo $PATH
       - name: Check YC CLI
