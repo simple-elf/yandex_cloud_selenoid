@@ -32,11 +32,14 @@ jobs:
           --create-boot-disk image-name=selenoid-110-20072020-1645-1595253212,size=10 \
           --image-folder-id standard-images --memory 2 --cores 2 --core-fraction 100
 
+      - run: yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address
       - name: Get public IP
         run: IP=$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address)
+      - run: echo ${IP}
 
       - name: Check status
-        run: curl http://$IP/status
+        run: curl http://${IP}/status
 
       - name: Delete instance
+        if: always()
         run: yc compute instance delete --name selenoid-instance
