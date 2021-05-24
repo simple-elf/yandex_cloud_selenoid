@@ -1,0 +1,29 @@
+name: Yandex Cloud CLI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a one-line script
+        run: echo running on branch ${GITHUB_REF##*/}
+      - name: Install YandexCloud CLI
+        run: curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+      - name: Add YandexCloud CLI to $PATH
+        run: echo "::add-path::/home/runner/yandex-cloud/bin"
+      - name: Check $PATH
+        run: echo $PATH
+      - name: Check YC CLI
+        run: yc -help
+
+#      - name: Init YandexCloud CLI
+#        run: |
+#          yc init \
+#          --token=${{ secrets.YC_TOKEN }} \
+#          --cloud-id=${{ secrets.YC_CLOUD_ID }} \
+#          --folder-id=${{ secrets.YC_FOLDER_ID }}
+#
+#      - name: Show YandexCloud CLI
+#        run: yc compute instance create --help
