@@ -7,23 +7,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Run a one-line script
-        run: echo running on branch ${GITHUB_REF##*/}
+
       - name: Install YandexCloud CLI
         run: curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
       - name: Add YandexCloud CLI to $PATH
         run: echo "/home/runner/yandex-cloud/bin" >> $GITHUB_PATH
-      - name: Check $PATH
-        run: echo $PATH
-      - name: Check YC CLI
-        run: yc -help
 
-#      - name: Init YandexCloud CLI
-#        run: |
-#          yc init \
-#          --token=${{ secrets.YC_TOKEN }} \
-#          --cloud-id=${{ secrets.YC_CLOUD_ID }} \
-#          --folder-id=${{ secrets.YC_FOLDER_ID }}
-#
-#      - name: Show YandexCloud CLI
-#        run: yc compute instance create --help
+#      - name: Check $PATH
+#        run: echo $PATH
+#      - name: Check YC CLI
+#        run: yc -help
+
+      - name: Init YandexCloud CLI
+        run: |
+          yc init \
+          --token=${{ secrets.YC_TOKEN }} \
+          --cloud-id=${{ secrets.YC_CLOUD_ID }} \
+          --folder-id=${{ secrets.YC_FOLDER_ID }}
+
+      - name: Create instance
+        run: |
+          yc compute instance create --name selenoid-instance --hostname selenoid-instance \
+          --zone ru-central1-c --public-ip \
+          --create-boot-disk image-name=selenoid-110-20072020-1645-1595253212,size=10 \
+          --image-folder-id standard-images --memory 2 --cores 2 --core-fraction 100
+
+      - name: Get public IP
+        run: IP=$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address)
+
+      - name: Check status
+        run: curl http://$IP/status
+
+      - name: Delete instance
+        run: yc compute instance delete --name selenoid-instance
