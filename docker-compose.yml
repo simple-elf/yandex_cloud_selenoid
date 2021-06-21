@@ -26,7 +26,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 4445:4444
-    command: -limit 10 -session-delete-timeout 60s
+    command: -limit 100 -session-delete-timeout 60s
 
   selenoid-ui:
     image: aerokube/selenoid-ui

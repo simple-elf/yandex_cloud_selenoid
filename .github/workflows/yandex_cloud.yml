@@ -1,6 +1,6 @@
 name: Yandex Cloud CLI
 
-on: fork #[push]
+on: [push]
 
 jobs:
   build:
@@ -27,19 +27,21 @@ jobs:
 
       - name: Create instance
         run: |
-          yc compute instance create --name selenoid-instance --hostname selenoid-instance \
+          yc compute instance create-with-container \
+          --name selenoid-instance --hostname selenoid-instance \
           --zone ru-central1-c --public-ip \
-          --create-boot-disk image-name=selenoid-110-20072020-1645-1595253212,size=10 \
-          --image-folder-id standard-images --memory 2 --cores 2 --core-fraction 100
+          --memory 2 --cores 2 --core-fraction 100 \
+          --service-account-name selenoid \
+          --docker-compose-file docker-compose.yaml
 
       - name: Get public IP
         run: echo "::set-output name=PUBLIC_IP::$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
         id: public_ip
 
-      - run: sleep 40
+      - run: sleep 60
 
       - name: Check status
-        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4444/status
+        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
 
       - name: Delete instance
         if: always()
