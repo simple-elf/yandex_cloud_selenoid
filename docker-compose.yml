@@ -4,7 +4,7 @@ services:
   selenoid_cm:
     image: aerokube/cm
     command: |
-      configure
+      selenoid configure
         --config-dir /root
         --last-versions 1
         --browsers "chrome"
