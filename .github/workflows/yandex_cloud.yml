@@ -32,7 +32,7 @@ jobs:
           --zone ru-central1-c --public-ip \
           --memory 2 --cores 2 --core-fraction 100 \
           --service-account-name selenoid \
-          --docker-compose-file docker-compose.yaml
+          --docker-compose-file docker-compose.yml
 
       - name: Get public IP
         run: echo "::set-output name=PUBLIC_IP::$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
