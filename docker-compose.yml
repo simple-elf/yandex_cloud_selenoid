@@ -3,6 +3,9 @@ version: '3.8'
 services:
   selenoid_cm:
     image: aerokube/cm
+    volumes:
+      - $PWD/selenoid/conf:/root
+      - /var/run/docker.sock:/var/run/docker.sock
     command: |
       selenoid configure
         --config-dir /root
@@ -11,9 +14,6 @@ services:
         --force
 
   # --tmpfs 128
-  #      volumes:
-  #        - $PWD/selenoid/conf:/root
-  #        - /var/run/docker.sock:/var/run/docker.sock
 
 #  selenoid:
 #    image: aerokube/selenoid
