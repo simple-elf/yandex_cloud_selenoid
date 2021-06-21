@@ -30,7 +30,7 @@ jobs:
           yc compute instance create-with-container \
           --name selenoid-instance --hostname selenoid-instance \
           --zone ru-central1-c --public-ip \
-          --memory 4 --cores 4 --core-fraction 100 \
+          --memory 2 --cores 2 --core-fraction 100 \
           --service-account-name selenoid \
           --docker-compose-file docker-compose.yml
 
