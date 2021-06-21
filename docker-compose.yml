@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  selenoid_cm:
+    image: aerokube/cm
+      volumes:
+        - $PWD/selenoid/conf:/root
+        - /var/run/docker.sock:/var/run/docker.sock
+      command: |
+        selenoid configure
+          --config-dir /root
+          --last-versions 1
+          --browsers "chrome"
+          --force
+# --tmpfs 128
+
+  selenoid:
+    image: aerokube/selenoid
+    restart: always
+    network_mode: bridge
+    volumes:
+      - $PWD/selenoid/conf:/etc/selenoid/
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 4445:4444
+    command: -limit 10 -session-delete-timeout 60s
+
+  selenoid-ui:
+    image: aerokube/selenoid-ui
+    restart: always
+    network_mode: bridge
+    links:
+      - selenoid
+    ports:
+      - 8081:8080
+    command: --selenoid-uri http://selenoid:4444
