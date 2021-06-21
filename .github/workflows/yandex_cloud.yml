@@ -41,9 +41,19 @@ jobs:
       - run: sleep 70
 
       - name: Check status
+        if: always()
+        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
+
+      - name: Check status
+        if: always()
+        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
+
+      - name: Check status
+        if: always()
         run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
 
       - name: Run Tests
+        if: always()
         run: ./gradlew test -Dremote=http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/wd/hub
 
       - name: Delete instance
