@@ -3,12 +3,13 @@ version: '3.8'
 services:
   selenoid_cm:
     image: aerokube/cm
-      command: |
-        selenoid configure
-          --config-dir /root
-          --last-versions 1
-          --browsers "chrome"
-          --force
+    command: |
+      configure
+        --config-dir /root
+        --last-versions 1
+        --browsers "chrome"
+        --force
+
   # --tmpfs 128
   #      volumes:
   #        - $PWD/selenoid/conf:/root
