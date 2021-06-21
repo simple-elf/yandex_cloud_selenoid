@@ -40,35 +40,11 @@ jobs:
 
       - name: Sleep
         if: always()
-        run: sleep 30
+        run: sleep 120
 
       - name: Check status
         if: always()
-        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
-
-      - name: Sleep
-        if: always()
-        run: sleep 30
-
-      - name: Check status
-        if: always()
-        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
-
-      - name: Sleep
-        if: always()
-        run: sleep 30
-
-      - name: Check status
-        if: always()
-        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
-
-      - name: Sleep
-        if: always()
-        run: sleep 30
-
-      - name: Check status
-        if: always()
-        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
+        run: curl --connect-timeout 60 http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
 
       - name: Run Tests
         if: always()
