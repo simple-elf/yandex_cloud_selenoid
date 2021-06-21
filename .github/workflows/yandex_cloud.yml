@@ -38,15 +38,33 @@ jobs:
         run: echo "::set-output name=PUBLIC_IP::$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
         id: public_ip
 
-      - run: sleep 70
+      - name: Sleep
+        if: always()
+        run: sleep 30
 
       - name: Check status
         if: always()
         run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
 
+      - name: Sleep
+        if: always()
+        run: sleep 30
+
       - name: Check status
         if: always()
         run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
+
+      - name: Sleep
+        if: always()
+        run: sleep 30
+
+      - name: Check status
+        if: always()
+        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
+
+      - name: Sleep
+        if: always()
+        run: sleep 30
 
       - name: Check status
         if: always()
@@ -55,6 +73,16 @@ jobs:
       - name: Run Tests
         if: always()
         run: ./gradlew test -Dremote=http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/wd/hub
+
+      - uses: actions/upload-artifact@master
+        if: always()
+        with:
+          name: report
+          path: build/reports/tests/test/index.html
+
+      - name: Check status
+        if: always()
+        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
 
       - name: Delete instance
         if: always()
