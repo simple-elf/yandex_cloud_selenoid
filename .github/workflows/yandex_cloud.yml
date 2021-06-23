@@ -38,6 +38,8 @@ jobs:
         run: echo "::set-output name=PUBLIC_IP::$(yc compute instance list --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
         id: public_ip
 
+      - run: echo ${{ steps.public_ip.outputs.PUBLIC_IP }}
+
       - run: |
           ./wait-for-it.sh ${{ steps.public_ip.outputs.PUBLIC_IP }}:4445 \
           -t 180 -s -- echo "Selenoid is up"

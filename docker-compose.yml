@@ -30,8 +30,8 @@ services:
 
   selenoid-ui:
     image: aerokube/selenoid-ui
-    depends_on:
-      - selenoid_cm
+#    depends_on:
+#      - selenoid_cm
     restart: always
     network_mode: bridge
     links:
