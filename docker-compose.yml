@@ -17,8 +17,8 @@ services:
 
   selenoid:
     image: aerokube/selenoid
-    depends_on:
-      - selenoid_cm
+#    depends_on:
+#      - selenoid_cm
     restart: always
     network_mode: bridge
     volumes:
@@ -38,4 +38,4 @@ services:
       - selenoid
     ports:
       - 8081:8080
-    command: --selenoid-uri http://selenoid:4444
+    command: --selenoid-uri http://selenoid:4445
