@@ -35,12 +35,17 @@ jobs:
           --docker-compose-file docker-compose.yml \
           --format json
 
-      - run: yc compute instance get --name selenoid-instance --format json
-      - run: yc compute instance get --name selenoid-instance --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r
+      - name: Get public IP
+        id: public_ip2
+        run: |
+          echo "::set-output name=PUBLIC_IP::$( \
+          yc compute instance get --name selenoid-instance \
+          --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
+      - run: echo ${{ steps.public_ip2.outputs.PUBLIC_IP }}
 
       - name: Get public IP
-        run: echo "::set-output name=PUBLIC_IP::$(yc compute instance get --name selenoid-instance --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
         id: public_ip
+        run: echo "::set-output name=PUBLIC_IP::$(yc compute instance get --name selenoid-instance --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
       - run: echo ${{ steps.public_ip.outputs.PUBLIC_IP }}
 
       - run: |
@@ -60,10 +65,6 @@ jobs:
         with:
           name: report
           path: build/reports/
-
-      - name: Check status
-        if: always()
-        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
 
       - name: Delete instance
         if: always()
