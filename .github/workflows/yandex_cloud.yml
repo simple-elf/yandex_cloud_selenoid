@@ -26,22 +26,18 @@ jobs:
         run: yc config set cloud-id ${{ secrets.YC_CLOUD_ID }}
 
       - name: Create instance
+        id: selenoid
         run: |
+          echo "::set-output name=PUBLIC_IP::$( \
           yc compute instance create-with-container \
           --name selenoid-instance --hostname selenoid-instance \
           --zone ru-central1-c --public-ip \
           --memory 4 --cores 4 --core-fraction 100 \
           --service-account-name selenoid \
           --docker-compose-file docker-compose.yml \
-          --format json
-
-      - name: Get public IP
-        id: public_ip2
-        run: |
-          echo "::set-output name=PUBLIC_IP::$( \
-          yc compute instance get --name selenoid-instance \
           --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
-      - run: echo ${{ steps.public_ip2.outputs.PUBLIC_IP }}
+
+      - run: echo ${{ steps.selenoid.outputs.PUBLIC_IP }}
 
       - name: Get public IP
         id: public_ip
