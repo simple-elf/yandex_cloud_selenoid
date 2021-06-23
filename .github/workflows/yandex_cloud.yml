@@ -40,7 +40,7 @@ jobs:
 
       - name: Sleep
         if: always()
-        run: sleep 60
+        run: sleep 0
 
       - run: |
           ./wait-for-it.sh ${{ steps.public_ip.outputs.PUBLIC_IP }}:4445 \
