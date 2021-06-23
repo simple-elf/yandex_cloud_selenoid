@@ -36,10 +36,10 @@ jobs:
           --format json
 
       - run: yc compute instance get --name selenoid-instance --format json
-      - run: yc compute instance get --name selenoid-instance --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address -r
+      - run: yc compute instance get --name selenoid-instance --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r
 
       - name: Get public IP
-        run: echo "::set-output name=PUBLIC_IP::$(yc compute instance get --name selenoid-instance --format json | jq .[].network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
+        run: echo "::set-output name=PUBLIC_IP::$(yc compute instance get --name selenoid-instance --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
         id: public_ip
       - run: echo ${{ steps.public_ip.outputs.PUBLIC_IP }}
 
