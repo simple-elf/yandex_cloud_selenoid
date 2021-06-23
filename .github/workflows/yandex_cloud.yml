@@ -30,7 +30,7 @@ jobs:
           yc compute instance create-with-container \
           --name selenoid-instance --hostname selenoid-instance \
           --zone ru-central1-c --public-ip \
-          --memory 2 --cores 2 --core-fraction 100 \
+          --memory 4 --cores 4 --core-fraction 100 \
           --service-account-name selenoid \
           --docker-compose-file docker-compose.yml
 
@@ -41,6 +41,10 @@ jobs:
       - name: Sleep
         if: always()
         run: sleep 120
+
+      - run: |
+          ./wait-for-it.sh http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status \
+          -t 120 --strict -- echo "Selenoid is up"
 
       - name: Check status
         if: always()
@@ -54,7 +58,7 @@ jobs:
         if: always()
         with:
           name: report
-          path: build/reports/tests/test/index.html
+          path: build/reports/
 
       - name: Check status
         if: always()
