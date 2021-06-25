@@ -36,25 +36,21 @@ jobs:
           --service-account-name selenoid \
           --docker-compose-file docker-compose.yml \
           --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
-
       - run: echo ${{ steps.selenoid.outputs.PUBLIC_IP }}
 
-      - name: Get public IP
-        id: public_ip
-        run: echo "::set-output name=PUBLIC_IP::$(yc compute instance get --name selenoid-instance --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
-      - run: echo ${{ steps.public_ip.outputs.PUBLIC_IP }}
+      - run: yc compute instance get --name selenoid-instance --format json
 
       - run: |
-          ./wait-for-it.sh ${{ steps.public_ip.outputs.PUBLIC_IP }}:4445 \
+          ./wait-for-it.sh ${{ steps.selenoid.outputs.PUBLIC_IP }}:4445 \
           -t 180 -s -- echo "Selenoid is up"
 
       - name: Check status
         if: always()
-        run: curl http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/status
+        run: curl http://${{ steps.selenoid.outputs.PUBLIC_IP }}:4445/status
 
       - name: Run Tests
         if: always()
-        run: ./gradlew test -Dremote=http://${{ steps.public_ip.outputs.PUBLIC_IP }}:4445/wd/hub
+        run: ./gradlew test -Dremote=http://${{ steps.selenoid.outputs.PUBLIC_IP }}:4445/wd/hub
 
       - uses: actions/upload-artifact@master
         if: always()
