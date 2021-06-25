@@ -26,19 +26,25 @@ jobs:
         run: yc config set cloud-id ${{ secrets.YC_CLOUD_ID }}
 
       - name: Create instance
+        id: selenoid_id
+        run: |
+          echo "::set-output name=INSTANCE_ID::$( \
+          yc compute instance create-with-container \
+          --docker-compose-file docker-compose.yml \
+          --zone ru-central1-c \
+          --public-ip \
+          --memory 4 --cores 4 --core-fraction 100 \
+          --service-account-name selenoid \
+          --format json | jq .id -r)"
+      - run: echo ${{ steps.selenoid_id.outputs.INSTANCE_ID }}
+
+      - run: yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} --format json
+      - name: Get public IP
         id: selenoid
         run: |
           echo "::set-output name=PUBLIC_IP::$( \
-          yc compute instance create-with-container \
-          --name selenoid-instance --hostname selenoid-instance \
-          --zone ru-central1-c --public-ip \
-          --memory 4 --cores 4 --core-fraction 100 \
-          --service-account-name selenoid \
-          --docker-compose-file docker-compose.yml \
+          yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} \
           --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
-      - run: echo ${{ steps.selenoid.outputs.PUBLIC_IP }}
-
-      - run: yc compute instance get --name selenoid-instance --format json
 
       - run: |
           ./wait-for-it.sh ${{ steps.selenoid.outputs.PUBLIC_IP }}:4445 \
@@ -60,4 +66,4 @@ jobs:
 
       - name: Delete instance
         if: always()
-        run: yc compute instance delete --name selenoid-instance
+        run: yc compute instance delete ${{ steps.selenoid_id.outputs.INSTANCE_ID }}
