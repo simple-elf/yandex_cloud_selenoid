@@ -39,6 +39,12 @@ jobs:
           --format json | jq .id -r)"
       - run: echo ${{ steps.selenoid_id.outputs.INSTANCE_ID }}
 
+      - run: export INSTANCE_ID=111666
+      - run: echo $INSTANCE_ID
+
+      - run: ./yc-create.sh 1
+      - run: echo $INSTANCE_ID
+
       - run: yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} --format json
       - name: Get public IP
         id: selenoid
@@ -47,7 +53,8 @@ jobs:
           yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} \
           --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
 
-      - run: echo $(yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} \
+      - run: |
+          echo $(yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} \
           --format json | jq .network_interfaces[0].primary_v4_address.address -r)
 
       - name: Wait for it
