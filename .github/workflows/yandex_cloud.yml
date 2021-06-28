@@ -28,22 +28,8 @@ jobs:
 
       - name: Create instance
         id: selenoid_id
-        run: |
-          echo "::set-output name=INSTANCE_ID::$( \
-          yc compute instance create-with-container \
-          --docker-compose-file docker-compose.yml \
-          --zone ru-central1-c \
-          --public-ip \
-          --memory 4 --cores 4 --core-fraction 100 \
-          --service-account-name selenoid \
-          --format json | jq .id -r)"
+        run: echo "::set-output name=INSTANCE_ID::$(./yc-create.sh 1)"
       - run: echo ${{ steps.selenoid_id.outputs.INSTANCE_ID }}
-
-      - run: export INSTANCE_ID=111666
-      - run: echo $INSTANCE_ID
-
-      - run: ./yc-create.sh 1
-      - run: echo $INSTANCE_ID
 
       - run: yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} --format json
       - name: Get public IP
