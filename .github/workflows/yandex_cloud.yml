@@ -47,10 +47,12 @@ jobs:
           yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} \
           --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address -r)"
 
-      - run: yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} \
+      - run: echo $(yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} \
           --format json | jq .network_interfaces[0].primary_v4_address.address -r)
 
-      - run: |
+      - name: Wait for it
+        if: always()
+        run: |
           ./wait-for-it.sh ${{ steps.selenoid.outputs.PUBLIC_IP }}:4445 \
           -t 180 -s -- echo "Selenoid is up"
 
