@@ -36,22 +36,18 @@ pipeline {
                 sh("echo $INSTANCE_ID")
             }
         }
-//
-//        stage('Test') {
-//            steps {
-//
-//            }
-//        }
 
-        stage('Delete instance') {
+        stage('Test') {
             steps {
-                sh("./yc-remove.sh $INSTANCE_ID")
+                sh("./gradlew test -Dremote=http://localhost:4445/wd/hub")
             }
         }
     }
 
     post {
         always {
+            sh("echo $INSTANCE_ID")
+            sh("./yc-remove.sh $INSTANCE_ID")
             junit "build/test-results/test/*.xml"
         }
     }
