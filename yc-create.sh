@@ -1,8 +1,9 @@
 #!/bin/bash
 
-echo "(1): ${1:="2"}"
-MEMORY=${1:="2"}
-CORE=${1:="2"} # TODO second param???
+MEMORY=$1
+CORE=$1 # TODO second param???
+
+yc --help
 
 INSTANCE_ID=$(yc compute instance create-with-container \
 --docker-compose-file docker-compose.yml \
