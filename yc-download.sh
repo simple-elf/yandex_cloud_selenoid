@@ -1,5 +1,6 @@
 #!/bin/bash
 
+apt-get install jq -y
 curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
 source "/var/jenkins_home/.bashrc"
 echo $PATH
