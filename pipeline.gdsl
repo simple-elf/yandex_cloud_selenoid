@@ -1,0 +1,59 @@
+pipeline {
+    agent {
+        label 'master'
+    }
+
+    parameters {
+        string(name: "threads", defaultValue: '2')
+    }
+
+    options {
+        timestamps()
+        buildDiscarder(logRotator(numToKeepStr: '50'))
+        //disableConcurrentBuilds()
+        disableResume()
+        timeout(time: 2, unit: 'HOURS') //TODO timeout
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([
+                        $class                           : 'GitSCM',
+                        branches                         : [[name: "*/master"]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions                       : [],
+                        submoduleCfg                     : [],
+                        userRemoteConfigs                : [[url : 'https://github.com/simple-elf/yandex_cloud_selenoid.git']]
+                ])
+            }
+        }
+
+        stage('Create instance') {
+            steps {
+                sh("./yc-download.sh")
+                sh("./yc-create.sh") // 2 cores
+                sh("echo $INSTANCE_ID")
+            }
+        }
+
+        stage('Test') {
+            steps {
+
+            }
+        }
+
+        stage('Delete instance') {
+            steps {
+                sh("./yc-remove.sh $INSTANCE_ID")
+            }
+        }
+    }
+
+    post {
+        always {
+            junit "build/test-results/test/*.xml"
+        }
+    }
+
+}
