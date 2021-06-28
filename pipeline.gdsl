@@ -36,12 +36,12 @@ pipeline {
                 sh("echo $INSTANCE_ID")
             }
         }
-
-        stage('Test') {
-            steps {
-
-            }
-        }
+//
+//        stage('Test') {
+//            steps {
+//
+//            }
+//        }
 
         stage('Delete instance') {
             steps {
