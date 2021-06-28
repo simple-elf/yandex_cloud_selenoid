@@ -5,7 +5,7 @@ curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
 source "/var/jenkins_home/.bashrc"
 echo $PATH
 
-#yc --help
+#yc --version
 echo "YC_CLOUD_ID: $YC_CLOUD_ID"
 
 yc config set token $YC_TOKEN

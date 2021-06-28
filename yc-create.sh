@@ -4,7 +4,7 @@ MEMORY=$1
 CORE=$1 # TODO second param???
 
 source "/var/jenkins_home/.bashrc"
-yc --help
+yc --version
 
 INSTANCE_ID=$(yc compute instance create-with-container \
 --docker-compose-file docker-compose.yml \
