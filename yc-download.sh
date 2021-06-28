@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-#export PATH="/home/yandex-cloud/bin:${PATH}"
+curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+export PATH="/home/yandex-cloud/bin:${PATH}"
 
 yc --help
 echo "YC_CLOUD_ID: $YC_CLOUD_ID"
