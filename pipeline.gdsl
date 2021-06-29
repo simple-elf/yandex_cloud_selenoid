@@ -35,10 +35,10 @@ pipeline {
                 script {
                     echo "blablabla"
                     jsonText = sh("./yc-create.sh ${params.threads}")
-                    echo jsonText
+                    echo "jsonText" + jsonText
                     json = readJSON(text: jsonText)
-                    echo json
-                    echo json.id
+                    echo "json" + json
+                    echo "json.id" + json.id
                 }
 
                 //sh("echo ")
