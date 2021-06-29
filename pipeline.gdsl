@@ -43,7 +43,8 @@ pipeline {
                     GRID_IP = json.network_interfaces[0].primary_v4_address.one_to_one_nat.address
                     //echo GRID_IP
                 }
-                sh("./wait-for-it.sh $GRID_IP:4445 -t 380 -s -- echo 'Selenoid is up'")
+                //sh("./wait-for-it.sh $GRID_IP:4445 -t 380 -s -- echo 'Selenoid is up'")
+                sh("sleep 200")
             }
         }
 
