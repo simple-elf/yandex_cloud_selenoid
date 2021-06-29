@@ -32,24 +32,34 @@ pipeline {
         stage('Create instance') {
             steps {
                 sh("./yc-download.sh")
-                sh("./yc-create.sh ${params.threads}") // 2 cores
-                sh("echo $INSTANCE_ID")
+                script {
+                    echo "blablabla"
+                    jsonText = sh("./yc-create.sh ${params.threads}")
+                    echo jsonText
+                    json = readJSON(text: jsonText)
+                    echo json
+                    echo json.id
+                }
+
+                //sh("echo ")
+                //
+                //sh("echo $INSTANCE_ID")
             }
         }
 
-        stage('Test') {
-            steps {
-                sh("./gradlew test -Dremote=http://localhost:4445/wd/hub")
-            }
-        }
+//        stage('Test') {
+//            steps {
+//                sh("./gradlew test -Dremote=http://localhost:4445/wd/hub")
+//            }
+//        }
     }
 
-    post {
-        always {
-            sh("echo $INSTANCE_ID")
-            sh("./yc-remove.sh $INSTANCE_ID")
-            junit "build/test-results/test/*.xml"
-        }
-    }
+//    post {
+//        always {
+//            sh("echo $INSTANCE_ID")
+//            sh("./yc-remove.sh $INSTANCE_ID")
+//            junit "build/test-results/test/*.xml"
+//        }
+//    }
 
 }
