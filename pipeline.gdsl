@@ -33,12 +33,11 @@ pipeline {
             steps {
                 sh("./yc-download.sh")
                 script {
-                    echo "blablabla"
-                    jsonText = sh("./yc-create.sh ${params.threads}")
-                    echo "jsonText" + jsonText
+                    jsonText = sh(returnStdout: true, script: "./yc-create.sh ${params.threads}")
+                    echo "jsonText " + jsonText
                     json = readJSON(text: jsonText)
-                    echo "json" + json
-                    echo "json.id" + json.id
+                    echo "json " + json
+                    echo "json.id " + json.id
                 }
 
                 //sh("echo ")
