@@ -37,13 +37,13 @@ pipeline {
                     echo "jsonText " + jsonText
                     json = readJSON(text: jsonText)
                     INSTANCE_ID = json.id
-                    echo INSTANCE_ID
+                    //echo INSTANCE_ID
 
-                    echo json.network_interfaces[0].primary_v4_address.address
+                    //echo json.network_interfaces[0].primary_v4_address.address
                     GRID_IP = json.network_interfaces[0].primary_v4_address.address
-                    echo GRID_IP
+                    //echo GRID_IP
                 }
-                sh("./wait-for-it.sh $GRID_IP:4445 -t 180 -s -- echo 'Selenoid is up'")
+                sh("./wait-for-it.sh $GRID_IP:4445 -t 380 -s -- echo 'Selenoid is up'")
             }
         }
 
