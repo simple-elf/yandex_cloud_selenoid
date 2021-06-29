@@ -39,10 +39,6 @@ pipeline {
                     INSTANCE_ID = json.id
                     echo INSTANCE_ID
 
-                    jsonText = sh(returnStdout: true, script: "./yc-get.sh $INSTANCE_ID")
-                    echo "jsonText " + jsonText
-                    json = readJSON(text: jsonText)
-                    echo json
                     echo json.network_interfaces[0].primary_v4_address.address
                     GRID_IP = json.network_interfaces[0].primary_v4_address.address
                     echo GRID_IP
