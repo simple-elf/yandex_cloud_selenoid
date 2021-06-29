@@ -36,24 +36,29 @@ pipeline {
                     jsonText = sh(returnStdout: true, script: "./yc-create.sh ${params.threads}")
                     echo "jsonText " + jsonText
                     json = readJSON(text: jsonText)
-                    echo "json " + json
-                    echo "json.id " + json.id
                     INSTANCE_ID = json.id
                     echo INSTANCE_ID
+
+                    jsonText = sh(returnStdout: true, script: "./yc compute instance get $INSTANCE_ID")
+                    echo "jsonText " + jsonText
+                    json = readJSON(text: jsonText)
+                    echo json
+                    echo json.network_interfaces[0].primary_v4_address.address
+                    GRID_IP = json.network_interfaces[0].primary_v4_address.address
+                    echo GRID_IP
                 }
             }
         }
 
-//        stage('Test') {
-//            steps {
-//                sh("./gradlew test -Dremote=http://localhost:4445/wd/hub")
-//            }
-//        }
+        stage('Test') {
+            steps {
+                sh("./gradlew test -Dremote=http://$GRID_IP:4445/wd/hub")
+            }
+        }
     }
 
     post {
         always {
-            sh("echo $INSTANCE_ID")
             sh("./yc-remove.sh $INSTANCE_ID")
 
             //junit "build/test-results/test/*.xml"

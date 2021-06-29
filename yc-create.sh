@@ -4,7 +4,6 @@ MEMORY=$1
 CORE=$1 # TODO second param???
 
 source "/var/jenkins_home/.bashrc"
-#yc --version
 
 # shellcheck disable=SC2046
 echo $(yc compute instance create-with-container \
