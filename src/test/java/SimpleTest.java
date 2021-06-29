@@ -5,8 +5,10 @@ import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.screenshot;
 import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static io.qameta.allure.Allure.step;
 
 import com.codeborne.selenide.Configuration;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +17,7 @@ public class SimpleTest {
   @BeforeEach
   public void beforeEach() {
     Configuration.remote = System.getProperty("remote");
+    Configuration.browserCapabilities.setCapability("enableVideo", true);
   }
 
   @Test
@@ -50,4 +53,10 @@ public class SimpleTest {
     getWebDriver().manage().window().maximize();
     screenshot("screen2");
   }
+
+  @AfterEach
+  public void afterEach() {
+    step("video");
+  }
+
 }
