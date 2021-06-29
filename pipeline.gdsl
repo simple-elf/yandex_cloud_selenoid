@@ -38,11 +38,9 @@ pipeline {
                     json = readJSON(text: jsonText)
                     echo "json " + json
                     echo "json.id " + json.id
+                    INSTANCE_ID = json.id
+                    echo INSTANCE_ID
                 }
-
-                //sh("echo ")
-                //
-                //sh("echo $INSTANCE_ID")
             }
         }
 
@@ -53,12 +51,13 @@ pipeline {
 //        }
     }
 
-//    post {
-//        always {
-//            sh("echo $INSTANCE_ID")
-//            sh("./yc-remove.sh $INSTANCE_ID")
-//            junit "build/test-results/test/*.xml"
-//        }
-//    }
+    post {
+        always {
+            sh("echo $INSTANCE_ID")
+            sh("./yc-remove.sh $INSTANCE_ID")
+
+            //junit "build/test-results/test/*.xml"
+        }
+    }
 
 }
