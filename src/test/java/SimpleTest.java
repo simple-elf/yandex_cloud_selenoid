@@ -68,7 +68,7 @@ public class SimpleTest {
     String sessionId = getSessionId();
     System.out.println(sessionId);
     closeWebDriver();
-    attachAllureVideo(sessionId);
+    //attachAllureVideo(sessionId);
   }
 
   @Step
