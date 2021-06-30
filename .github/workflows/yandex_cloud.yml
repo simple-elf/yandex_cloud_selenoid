@@ -57,6 +57,12 @@ jobs:
         if: always()
         run: ./gradlew test -Dremote=http://${{ steps.selenoid.outputs.PUBLIC_IP }}:4445/wd/hub
 
+      - uses: actions/upload-artifact@master
+        if: always()
+        with:
+          name: report
+          path: build/reports/
+
       - name: Upload allure-results to Allure EE
         uses: simple-elf/allurectl-action@master
         id: allure-ee
