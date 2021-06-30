@@ -29,7 +29,7 @@ jobs:
       - name: Create instance
         id: selenoid_id
         run: echo "::set-output name=INSTANCE_ID::$(./yc-create.sh 2 | jq .id)"
-      - run: echo ${{ steps.selenoid_id.outputs.INSTANCE_ID }}
+      #- run: echo ${{ steps.selenoid_id.outputs.INSTANCE_ID }}
 
       - run: yc compute instance get ${{ steps.selenoid_id.outputs.INSTANCE_ID }} --format json
       - name: Get public IP
