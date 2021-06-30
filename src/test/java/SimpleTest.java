@@ -76,7 +76,7 @@ public class SimpleTest {
     try {
       System.out.println("attachAllureVideo attachment");
       URL videoUrl = new URL(Configuration.remote + "/video/" + sessionId + ".mp4");
-      step("Video link: " + videoUrl.toString());
+      step("Video link: " + Configuration.remote + "/video/" + sessionId + ".mp4");
       InputStream is = getSelenoidVideo(videoUrl);
       Allure.addAttachment("Video", "video/mp4", is, "mp4");
       System.out.println("attachAllureVideo attachment 2");
