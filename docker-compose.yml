@@ -38,14 +38,14 @@ services:
       -log-output-dir /opt/selenoid/logs
       -video-output-dir /opt/selenoid/video
 
-  selenoid-ui:
-    image: aerokube/selenoid-ui
-    depends_on:
-      - selenoid_cm
-    restart: always
-    network_mode: bridge
-    links:
-      - selenoid
-    ports:
-      - 8081:8080
-    command: --selenoid-uri http://selenoid:4445
+#  selenoid-ui:
+#    image: aerokube/selenoid-ui
+#    depends_on:
+#      - selenoid_cm
+#    restart: always
+#    network_mode: bridge
+#    links:
+#      - selenoid
+#    ports:
+#      - 8081:8080
+#    command: --selenoid-uri http://selenoid:4445
