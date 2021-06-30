@@ -26,16 +26,11 @@ services:
     ports:
       - 4445:4444
     command: |
-      -limit 20 -session-delete-timeout 60s
-      -s3-endpoint https://storage.yandexcloud.net
-      -s3-bucket-name selenoid
-      -s3-region ru-central1
-      -s3-access-key 6fokW2qVowYKmWhSQ-as
-      -s3-secret-key WYpzLcoiJ1E6Fmk2fTHDv-fHU7JybD9KB2hdBnz8
-
-
-  #      -s3-key-pattern $date/$sessionId.$fileExtension
-
+      -limit 30
+      -timeout 2m
+      -service-startup-timeout 2m
+      -session-attempt-timeout 2m
+      -session-delete-timeout 2m
 
   selenoid-ui:
     image: aerokube/selenoid-ui
