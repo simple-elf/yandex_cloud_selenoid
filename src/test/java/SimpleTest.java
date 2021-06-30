@@ -66,6 +66,7 @@ public class SimpleTest {
   public void afterEach() {
     step("video");
     String sessionId = getSessionId();
+    System.out.println(sessionId);
     closeWebDriver();
     attachAllureVideo(sessionId);
   }
@@ -73,11 +74,12 @@ public class SimpleTest {
   @Step
   public static void attachAllureVideo(String sessionId) {
     try {
+      System.out.println("attachAllureVideo attachment");
       URL videoUrl = new URL(Configuration.remote + "/video/" + sessionId + ".mp4");
       step("Video link: " + videoUrl.toString());
       InputStream is = getSelenoidVideo(videoUrl);
       Allure.addAttachment("Video", "video/mp4", is, "mp4");
-      System.out.println("attachAllureVideo attachment");
+      System.out.println("attachAllureVideo attachment 2");
       deleteSelenoidVideo(videoUrl);
     } catch (Exception e) {
       System.out.println("attachAllureVideo exception");
