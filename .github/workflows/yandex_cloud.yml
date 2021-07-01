@@ -72,6 +72,6 @@ jobs:
           allure_ee_token: ${{ secrets.ALLURE_EE_TOKEN }}
           project_id: ${{ secrets.ALLURE_EE_PROJECT_ID }}
 
-#      - name: Delete instance
-#        if: always()
-#        run: ./yc-remove.sh ${{ steps.selenoid_id.outputs.INSTANCE_ID }}
+      - name: Delete instance
+        if: always()
+        run: ./yc-remove.sh ${{ steps.selenoid_id.outputs.INSTANCE_ID }}
