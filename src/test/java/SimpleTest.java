@@ -6,26 +6,33 @@ import static com.codeborne.selenide.Selenide.screenshot;
 import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.WebDriverRunner.closeWebDriver;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static io.qameta.allure.Allure.addAttachment;
 import static io.qameta.allure.Allure.step;
 
 import com.codeborne.selenide.Configuration;
-import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class SimpleTest {
 
-  @BeforeEach
-  public void beforeEach() {
-    Configuration.remote = System.getProperty("remote");
+  @BeforeAll
+  public static void beforeAll() {
+    Configuration.remote = System.getProperty("remote", "http://localhost:4444/wd/hub");
     Configuration.browserCapabilities.setCapability("enableVideo", true);
+  }
+
+  @BeforeEach
+  public void beforeEach(TestInfo testInfo) {
+    Configuration.browserCapabilities.setCapability("name", testInfo.getDisplayName());
   }
 
   @Test
@@ -68,17 +75,18 @@ public class SimpleTest {
     String sessionId = getSessionId();
     System.out.println(sessionId);
     closeWebDriver();
-    //attachAllureVideo(sessionId);
+    attachAllureVideo(sessionId);
   }
 
   @Step
-  public static void attachAllureVideo(String sessionId) {
+  public void attachAllureVideo(String sessionId) {
     try {
       System.out.println("attachAllureVideo attachment");
-      URL videoUrl = new URL(Configuration.remote + "/video/" + sessionId + ".mp4");
-      step("Video link: " + Configuration.remote + "/video/" + sessionId + ".mp4");
+      String selenoidUrl = Configuration.remote.replace("/wd/hub", "");
+      URL videoUrl = new URL(selenoidUrl + "/video/" + sessionId + ".mp4");
+      step("Video link: " + videoUrl.toString());
       InputStream is = getSelenoidVideo(videoUrl);
-      Allure.addAttachment("Video", "video/mp4", is, "mp4");
+      addAttachment("Video", "video/mp4", is, "mp4");
       System.out.println("attachAllureVideo attachment 2");
       deleteSelenoidVideo(videoUrl);
     } catch (Exception e) {
@@ -88,7 +96,7 @@ public class SimpleTest {
   }
 
   @Step
-  public static InputStream getSelenoidVideo(URL url) {
+  public InputStream getSelenoidVideo(URL url) {
     int lastSize = 0;
     int exit = 2;
     for (int i = 0; i < 20; i++) {
@@ -119,7 +127,7 @@ public class SimpleTest {
   }
 
   @Step
-  public static void deleteSelenoidVideo(URL url) {
+  public void deleteSelenoidVideo(URL url) {
     try {
       HttpURLConnection deleteConn = (HttpURLConnection) url.openConnection();
       deleteConn.setDoOutput(true);
@@ -136,7 +144,7 @@ public class SimpleTest {
     }
   }
 
-  public static String getSessionId() {
+  public String getSessionId() {
     return ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
   }
 
