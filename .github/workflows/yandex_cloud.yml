@@ -27,7 +27,7 @@ jobs:
         run: yc config set cloud-id ${{ secrets.YC_CLOUD_ID }}
       - run: echo "ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}\n" > .env
       - run: echo "SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> .env
-      - run: cat s3.env
+      - run: cat .env
 
       - name: Create instance
         id: selenoid_id
