@@ -29,6 +29,8 @@ services:
       - $PWD/selenoid/logs:/opt/selenoid/logs
     ports:
       - 4445:4444
+    env_file:
+      - .env
     command: |
       -limit 30
       -timeout 2m
@@ -40,8 +42,8 @@ services:
       -s3-bucket-name selenoid
       -s3-endpoint https://storage.yandexcloud.net
       -s3-region ru-central1
-      -s3-access-key ${s3-access-key}
-      -s3-secret-key ${s3-secret-key}
+      -s3-access-key ${ACCESS_KEY}
+      -s3-secret-key ${SECRET_KEY}
 
 #  selenoid-ui:
 #    image: aerokube/selenoid-ui

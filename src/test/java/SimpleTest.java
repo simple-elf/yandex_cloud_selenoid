@@ -40,17 +40,17 @@ public class SimpleTest {
     test_do();
   }
 
-  @Test
+  //@Test
   public void test_2() {
     test_do();
   }
 
-  @Test
+  //@Test
   public void test_3() {
     test_do();
   }
 
-  @Test
+  //@Test
   public void test_4() {
     test_do();
   }
@@ -75,7 +75,13 @@ public class SimpleTest {
     String sessionId = getSessionId();
     System.out.println(sessionId);
     closeWebDriver();
-    attachAllureVideo(sessionId);
+    //attachAllureVideo(sessionId);
+    attachS3Video(sessionId);
+  }
+
+  @Step
+  public void attachS3Video(String sessionId) {
+
   }
 
   @Step
