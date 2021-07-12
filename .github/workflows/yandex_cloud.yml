@@ -69,7 +69,8 @@ jobs:
         if: always()
         with:
           name: report
-          path: build/reports/
+          #path: build/reports/
+          path: docker-compose.yml
 
       - name: Upload allure-results to Allure EE
         uses: simple-elf/allurectl-action@master
