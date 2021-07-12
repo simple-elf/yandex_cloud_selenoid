@@ -30,7 +30,6 @@ jobs:
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
           S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
         run: |
-          echo $'\n' >> docker-compose.yml
           echo "      -s3-access-key $S3_ACCESS_KEY" >> docker-compose.yml
           echo "      -s3-secret-key $S3_SECRET_KEY" >> docker-compose.yml
       - run: cat docker-compose.yml
