@@ -11,5 +11,6 @@ echo $(yc compute instance create-with-container \
 --zone ru-central1-c \
 --public-ip \
 --memory $MEMORY --cores $CORE --core-fraction 100 \
---service-account-name selenoid \
 --format json)
+
+#--service-account-name selenoid \
