@@ -55,7 +55,7 @@ jobs:
         if: always()
         run: |
           ./wait-for-it.sh ${{ steps.selenoid.outputs.PUBLIC_IP }}:4445 \
-          -t 180 -s -- echo "Selenoid is up"
+          -t 380 -s -- echo "Selenoid is up"
 
       - name: Check status
         if: always()
