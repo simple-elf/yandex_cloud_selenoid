@@ -42,7 +42,7 @@ pipeline {
                     GRID_IP = json.network_interfaces[0].primary_v4_address.address
                 }
 
-                sh("./wait-for-it.sh $GRID_IP:4445 -t 180 -s -- echo 'Selenoid is up'")
+                sh("./wait-for-it.sh $GRID_IP:4445 -t 280 -s -- echo 'Selenoid is up'")
                 //sh("sleep 200")
             }
         }
