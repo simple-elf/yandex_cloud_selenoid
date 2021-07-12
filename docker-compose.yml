@@ -29,8 +29,6 @@ services:
       - $PWD/selenoid/logs:/opt/selenoid/logs
     ports:
       - 4445:4444
-    env_file:
-      - .env
     command: |
       -limit 30
       -timeout 2m
