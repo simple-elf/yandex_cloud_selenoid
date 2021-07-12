@@ -37,6 +37,8 @@ services:
       -session-delete-timeout 2m
       -log-output-dir /opt/selenoid/logs
       -video-output-dir /opt/selenoid/video
-      -s3-bucket-name selenoid
-      -s3-endpoint https://storage.yandexcloud.net
-      -s3-region ru-central1
+
+
+#      -s3-bucket-name selenoid
+#      -s3-endpoint https://storage.yandexcloud.net
+#      -s3-region ru-central1

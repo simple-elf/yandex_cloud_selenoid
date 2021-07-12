@@ -1,7 +1,7 @@
 name: Yandex Cloud CLI
 
-on: [push]
-#on: [fork]
+#on: [push]
+on: [fork]
 
 jobs:
   build:

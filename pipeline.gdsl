@@ -4,7 +4,7 @@ pipeline {
     }
 
     parameters {
-        choise(name: "threads", choices: ['2', '4', '6', '8', '10', '12', '14', '16', '20'])
+        choice(name: "threads", choices: ['2', '4', '6', '8', '10', '12', '14', '16', '20'])
     }
 
     options {
@@ -38,12 +38,12 @@ pipeline {
                     json = readJSON(text: jsonText)
                     INSTANCE_ID = json.id
 
-                    GRID_IP = json.network_interfaces[0].primary_v4_address.one_to_one_nat.address
+                    //GRID_IP = json.network_interfaces[0].primary_v4_address.one_to_one_nat.address
                     GRID_IP = json.network_interfaces[0].primary_v4_address.address
                 }
 
-                //sh("./wait-for-it.sh $GRID_IP:4445 -t 180 -s -- echo 'Selenoid is up'")
-                sh("sleep 200")
+                sh("./wait-for-it.sh $GRID_IP:4445 -t 180 -s -- echo 'Selenoid is up'")
+                //sh("sleep 200")
             }
         }
 
