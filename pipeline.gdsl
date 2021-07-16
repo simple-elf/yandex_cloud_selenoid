@@ -54,12 +54,12 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            //sh("./yc-remove.sh $INSTANCE_ID")
-
-            //junit "build/test-results/test/*.xml"
-        }
-    }
+//    post {
+//        always {
+//            sh("./yc-remove.sh $INSTANCE_ID")
+//
+//            //junit "build/test-results/test/*.xml"
+//        }
+//    }
 
 }
