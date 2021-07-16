@@ -10,7 +10,7 @@ echo $(yc compute instance create-with-container \
 --docker-compose-file docker-compose.yml \
 --memory $MEMORY --cores $CORE --core-fraction 100 \
 --zone ru-central1-c \
---network-interface subnet-id=b0cpom0kvo0583snbohv \
+--network-interface subnet-id=b0chs6mi29ivgii84ojt \
 --format json)
 
 #--public-ip \
