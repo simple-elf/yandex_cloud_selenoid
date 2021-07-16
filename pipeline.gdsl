@@ -56,7 +56,7 @@ pipeline {
 
     post {
         always {
-            sh("./yc-remove.sh $INSTANCE_ID")
+            //sh("./yc-remove.sh $INSTANCE_ID")
 
             //junit "build/test-results/test/*.xml"
         }
